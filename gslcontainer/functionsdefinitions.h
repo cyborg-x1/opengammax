@@ -275,7 +275,7 @@ static void SecondDerivSmoothedGaussPartials( double x, double s, double ai, dou
     Ji2 = f1 * c1 / s;
 }
 
-static double randomReal( double max )
+static double randomReal( double /*max*/ )
 {
     QTime now = QTime::currentTime();
     qsrand( now.msec() );

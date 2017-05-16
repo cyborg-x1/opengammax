@@ -133,7 +133,20 @@ bool GslContainer::genericNonlinearFunc2(
       status = gsl_multifit_test_delta (s->dx, s->x,1e-4, 1e-4);
     }
     while (status == GSL_CONTINUE && iter < 500);
-    gsl_multifit_covar (s->J, 0.0, covar);
+
+
+
+//    #if GSL_MAJOR_VERSION >=2
+              gsl_matrix *J=gsl_matrix_alloc(s->fdf->n, s->fdf->p);
+              gsl_multifit_fdfsolver_jac (s, J);
+              gsl_multifit_covar( J, 0.0, covar );
+              gsl_matrix_free(J);
+//    #else
+//              gsl_multifit_covar (s->J, 0.0, covar);
+//    #endif
+
+
+
 
     rep += "\n";
     rep += "\n ********************************************************\n";
@@ -164,7 +177,16 @@ QString GslContainer::printJacobian(const int n, const int p)
         rep += "\n";
         for (int j=0; j<p; j++)
         {
-            double a = gsl_matrix_get( s->J, i, j );
+            //    #if GSL_MAJOR_VERSION >=2
+                          gsl_matrix *J=gsl_matrix_alloc(s->fdf->n, s->fdf->p);
+                          gsl_multifit_fdfsolver_jac (s, J);
+                          double a = gsl_matrix_get( J, i, j );
+                          gsl_matrix_free(J);
+            //    #else
+            //            double a = gsl_matrix_get( s->J, i, j );
+            //    #endif
+
+
             rep += QString("%1   ").arg(a);
         }
     }
@@ -329,7 +351,7 @@ int GslContainer::expb_df (const gsl_vector * x, void *data, gsl_matrix * J)
     // a * exp(k*t) + b
     double ai = gsl_vector_get (x, 0);
     double ki = gsl_vector_get (x, 1);
-    double bi = gsl_vector_get (x, 2);
+    //double bi = gsl_vector_get (x, 2);
 
     double Ji[3];
     size_t i;
@@ -385,7 +407,7 @@ int GslContainer::gaussSum_f (const gsl_vector * x, void *data, gsl_vector * f)
     double *y = ((struct type3 *)data)->y;
     double *sigma = ((struct type3 *) data)->sigma;
     double *fp = ((struct type3 *) data)->fixparms;
-    int *numFixPms = ((struct type3 *) data)->nfp;
+    //int *numFixPms = ((struct type3 *) data)->nfp;
 
     Doblst hei, cen;
     int p = x->size;
@@ -413,10 +435,10 @@ int GslContainer::gaussSum_df (const gsl_vector * x, void *data, gsl_matrix * J)
 {
     size_t n = ((struct type3 *)data)->n;
     double *t = ((struct type3 *)data)->t;
-    double *y = ((struct type3 *)data)->y;
+    //double *y = ((struct type3 *)data)->y;
     double *sigma = ((struct type3 *) data)->sigma;
     double *fp = ((struct type3 *) data)->fixparms;
-    int *numFixPms = ((struct type3 *) data)->nfp;
+    //int *numFixPms = ((struct type3 *) data)->nfp;
 
     Doblst hei, cen;
     int p = x->size;
@@ -461,10 +483,10 @@ int GslContainer::test_f (const gsl_vector * x, void *data, gsl_vector * f)
 {
     size_t n = ((struct type3 *)data)->n;
     // size_t np = ((struct type3 *)data)->np; // QQQ QQQ QQQ AQUI
-    double *t = ((struct type3 *)data)->t;
+    //double *t = ((struct type3 *)data)->t;
     double *y = ((struct type3 *)data)->y;
     double *sigma = ((struct type3 *) data)->sigma;
-    double *fp = ((struct type3 *) data)->fixparms;
+    //double *fp = ((struct type3 *) data)->fixparms;
     // int *pfp = ((struct type3 *) data)->partfixparms; // QQQ QQQ QQQ AQUI
 
     // get x to set a, c
@@ -505,8 +527,8 @@ int GslContainer::test_df (const gsl_vector * x, void *data, gsl_matrix * J)
 {
     size_t n = ((struct type3 *)data)->n;
     // size_t np = ((struct type3 *)data)->np; // QQQ QQQ QQQ Aqui
-    double *t = ((struct type3 *)data)->t;
-    double *y = ((struct type3 *)data)->y;
+    //double *t = ((struct type3 *)data)->t;
+    //double *y = ((struct type3 *)data)->y;
     double *sigma = ((struct type3 *) data)->sigma;
     double *fp = ((struct type3 *) data)->fixparms;
     int *pfp = ((struct type3 *) data)->nfp; // partfixparms;

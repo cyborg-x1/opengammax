@@ -32,7 +32,7 @@ win32 {
   #CONFIG += console
 }
 unix {
-    INCLUDEPATH += /usr/include/qt4/qt /usr/local/qwt-6.1.0/include
+    INCLUDEPATH += /usr/include/qt4/qt /usr/local/qwt-6.1.0/include /usr/include/qwt
     LIBS += -L/usr/local/qwt-6.1.0/lib -lqwt -lasound
     DEFINES += HAVE_ALSA
 }
@@ -41,7 +41,7 @@ QMAKE_CXXFLAGS += -std=c++0x
 
 # Qwt config end
 # GnuWin32 / GSL config:
-GSL_ROOT=../../gsl-1.16/
+GSL_ROOT=../../gsl-2.1/
 win32 {
     LIBS += -L$${GSL_ROOT}/.libs -L$${GSL_ROOT}/cblas/.libs
     INCLUDEPATH += $${GSL_ROOT}

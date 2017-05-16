@@ -153,7 +153,7 @@ private slots:
 // Button Box clicked: to be impl'd
 //  void on_buttonBox_clicked( QAbstrsamactButton * button );
 // energy and efficiency-fits related
-    void on_neffptsLne_textChanged( QString text )
+    void on_neffptsLne_textChanged( QString /*text*/ )
         { mdls->changeNEfficPts( ui.neffptsLne->text().toInt() ); }
     void on_doefficfitPbt_clicked();
 

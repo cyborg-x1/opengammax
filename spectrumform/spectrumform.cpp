@@ -33,7 +33,7 @@ SpectrumForm::SpectrumForm( const QString & fna,
                            const QString & anaNucPa,
                            const QString & calNucPa,
                            Sample & samp,
-                           SpectrumIO & io,
+                           SpectrumIO & /*io*/,
                            std::function<void()> onClose,
                            QwtPlotCurve::CurveStyle style)
     : onClose(onClose)
@@ -677,7 +677,7 @@ void SpectrumForm::plotCounts(Sample & samp)
 
 void SpectrumForm::rePlotSample(Sample & sam)
 {
-    char buf[40];
+    //char buf[40];
     Counts *cts = sam.counts;
     Intlst *ip = cts->getAllCounts();
 
@@ -790,7 +790,7 @@ void SpectrumForm::determineFwhmOfPeaks()
     ui.pteWidthFitLog->appendPlainText( reps->reportPeakWidths( pklist, energyCalibration ) );
 }
 
-bool SpectrumForm::doEnergyCalib( Doblst xlst, Doblst ylst, Doblst slst, int fTy )
+bool SpectrumForm::doEnergyCalib( Doblst /*xlst*/, Doblst /*ylst*/, Doblst /*slst*/, int /*fTy*/ )
 {
     /*  2010-03-15 IMPLEMENAR!
         if ( fwhmChFitType() == 0 )
